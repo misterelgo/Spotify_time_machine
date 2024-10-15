@@ -27,7 +27,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=Client_ID,
                                                client_secret=Client_Secret,
                                                redirect_uri=Redirect_URI,
                                                scope="playlist-modify-private"))
-
+user_id = sp.current_user()["id"]
 # Search Spotify for the Songs from Step 1
 year = travel_year.split("-")[0]
 song_uris = []
@@ -41,3 +41,8 @@ for song in song_names:
         print(f"{song} doesn't exist in Spotify. Skipped.")
 
 # Creating and Adding to Spotify Playlist
+#name "YYYY-MM-DD Billboard 100"
+playlist = sp.user_playlist_create(user=user_id, name=f"{travel_year} Billboard 100", public=False)
+print(playlist)
+
+sp.playlist_add_items(playlist_id=playlist["id"], items=song_uris)
